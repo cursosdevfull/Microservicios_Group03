@@ -23,6 +23,8 @@ services:
     environment:
       - SERVICE_API2_ENDPOINT=http://backend2:3020/api
       - PORT=3010
+    depends_on:
+      - backend2
     networks:
       - ms-network
 
@@ -31,8 +33,8 @@ services:
       context: .
       dockerfile: backend2/Dockerfile
     image: ms-backend2
-    ports:
-      - 3020
+    expose:
+      - "3020"
     environment:
       - PORT=3020
     networks:

@@ -2,7 +2,7 @@ FROM node:14.15.3-alpine
 
 ARG basedir="frontend"
 
-WORKDIR ${basedir}/ .
+WORKDIR /app
 
 COPY ${basedir}/package*.json ./
 

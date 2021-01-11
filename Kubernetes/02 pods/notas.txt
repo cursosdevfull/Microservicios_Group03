@@ -1,0 +1,23 @@
+kubectl run serverweb --image=nginx:alpine
+kubectl get pods
+kubectl get po
+
+kubectl port-forward serverweb 7000:80
+
+kubectl get po serverweb
+kubectl get po serverweb -o yaml
+
+kubectl describe po serverweb
+
+kubectl exec -it serverweb -- sh
+
+kubectl logs serverweb -f
+kubectl logs serverweb -c nginx1 -f
+
+kubectl apply -f 01pod.yaml
+kubectl delete -f 01pod.yaml
+
+kubectl get pods --show-labels
+
+kubectl get pods -l env=dev
+kubectl get pods -l env=dev --show-labels

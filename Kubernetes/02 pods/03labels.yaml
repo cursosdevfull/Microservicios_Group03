@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    app: front
+    env: dev
+spec:
+  containers:
+    - name: contenedor1
+      image: nginx:alpine
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apijava
+  labels:
+    app: back
+    env: dev
+spec:
+  containers:
+    - name: contenedor1
+      image: nginx:alpine

@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "microservicios-ingress"
+  annotations:
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /api/config
+            backend:
+              serviceName: frontend-svc
+              servicePort: 80
+          - path: /api
+            backend:
+              serviceName: backend1-svc
+              servicePort: 80
+          - path: /
+            backend:
+              serviceName: frontend-svc
+              servicePort: 80

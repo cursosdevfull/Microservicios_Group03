@@ -1,0 +1,1 @@
+kubectl apply -f frontend-deploy.yaml -f frontend-svc.yaml -f backend1-deploy.yaml -f backend1-svc.yaml -f backend2-deploy.yaml -f backend2-svc.yaml

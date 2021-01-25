@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend2
+  labels:
+    app: backend2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend2
+  template:
+    metadata:
+      labels:
+        app: backend2
+    spec:
+      containers:
+        - name: backend1-pod
+          image: localhost:5000/ms-backend2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3020
+          env:
+            - name: PORT
+              value: "3020"
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3020
+            initialDelaySeconds: 3
+            periodSeconds: 20

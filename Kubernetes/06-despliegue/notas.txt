@@ -1,0 +1,10 @@
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+kubectl apply -f frontend-deploy.yaml -f frontend-svc.yaml -f backend1-deploy.yaml -f backend1-svc.yaml -f backend2-deploy.yaml -f backend2-svc.yaml -f ingress.yaml
+
+kubectl delete -f frontend-deploy.yaml -f frontend-svc.yaml -f backend1-deploy.yaml -f backend1-svc.yaml -f backend2-deploy.yaml -f backend2-svc.yaml -f ingress.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+

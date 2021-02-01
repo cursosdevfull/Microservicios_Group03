@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="D:\Repositorios Personales\CursoNodeJS\NodeJS_Group03\test\unit\medic.usecase.spec.ts">
+    <testCase name="medic.usecase insert" duration="2"/>
+    <testCase name="medic.usecase getAll" duration="0"/>
+    <testCase name="medic.usecase getOne" duration="0"/>
+    <testCase name="medic.usecase getByPage" duration="1"/>
+    <testCase name="medic.usecase update" duration="0"/>
+    <testCase name="medic.usecase delete" duration="0"/>
+  </file>
+</testExecutions>

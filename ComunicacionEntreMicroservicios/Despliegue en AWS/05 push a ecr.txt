@@ -1,0 +1,15 @@
+Crear los repositorios para las imágenes
+
+1. Ir a ECR 
+2. Crear un repositorio para cada imagen: ejm 282865065290.dkr.ecr.us-east-2.amazonaws.com/backend1
+3. Modificar los nombres (tag names) de las imágenes en docker-compose
+
+  backend1:
+    build:
+      context: .
+      dockerfile: backend1/Dockerfile
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/backend1
+
+4. Ejecutar "docker-compose build" para crear las imágenes localmente con los nombres del paso anterior.
+
+5. Ejecutar "docker-compose push" para llevar las imágenes locales hacia los repositorios en ECR

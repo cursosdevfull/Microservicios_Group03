@@ -1,0 +1,19 @@
+
+Trabajar con Windows (Instalar previamente Chocolatey)
+
+Instalar
+- aws-cli (https://awscli.amazonaws.com/AWSCLIV2.msi)
+- eksctl (choco install -y eksctl)
+- helm (choco install kubernetes-helm)
+
+Con Mac (Instalar previamente Homebrew)
+
+Instalar
+- aws-cli (https://awscli.amazonaws.com/AWSCLIV2.pkg)
+- eksctl
+  (brew tap weaveworks/tap)
+  (brew install weaveworks/tap/eksctl)
+- helm (brew install helm)
+
+
+- kind

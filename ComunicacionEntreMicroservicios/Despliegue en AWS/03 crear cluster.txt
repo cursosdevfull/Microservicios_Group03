@@ -17,7 +17,7 @@ eksctl create nodegroup \
 eksctl create nodegroup --cluster test-cluster --name test-workers --version auto --node-type t3.medium --nodes 2 --nodes-min 2 --nodes-max 3 --asg-access
 
 Para escalar
-eksctl scale nodegroup --cluster=test-cluster --nodes=0 test-workers
+eksctl scale nodegroup --cluster=test-cluster --nodes=0 --nodes-max=0 --nodes-min=0 test-workers
 
 
 Para listar los contextos

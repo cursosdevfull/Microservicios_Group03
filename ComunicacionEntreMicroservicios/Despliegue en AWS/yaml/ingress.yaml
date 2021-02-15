@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "microservices-ingress"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api/config
+            backend:
+              serviceName: frontend-svc
+              servicePort: 80
+          - path: /api/*
+            backend:
+              serviceName: backend1-svc
+              servicePort: 80
+          - path: /*
+            backend:
+              serviceName: frontend-svc
+              servicePort: 80

@@ -1,20 +1,19 @@
 import * as amqp from 'amqplib';
 import { EventEmitter } from 'events';
 import { EventsHelper } from '../../helpers/events.helper';
-import { OrderBuilder, OrderEntity } from '../domain/order.entity';
+import { DeliveryBuilder, DeliveryEntity } from '../domain/delivery.entity';
 import { Repository } from './repository';
 import { RepositoryQueue } from './repository-queue';
 
 export class UseCase {
 	constructor(private operation: Repository, private queue: RepositoryQueue) {}
 
-	async insert(orderEntity: OrderEntity) {
-		const result = await this.operation.insert(orderEntity);
+	async insert(deliveryEntity: DeliveryEntity) {
+		const result = await this.operation.insert(deliveryEntity);
 		this.queue.sendMessage({
-			type: 'ORDER_CREATED',
+			type: 'PAYMENT_CREATED',
 			data: result,
 		});
-		this.receiveMessages();
 		return result;
 	}
 
@@ -25,13 +24,18 @@ export class UseCase {
 				async (channel: amqp.Channel, message: any, isError: boolean) => {
 					const messageAsJSON = JSON.parse(message.content.toString());
 
-					const status = isError ? 'CANCELLED' : 'APPROVED';
-					const orderEntity: Partial<OrderEntity> = { status };
+					const { name, itemCount, transaction } = messageAsJSON.data;
 
-					await this.operation.update(
-						messageAsJSON.data.transaction,
-						orderEntity
-					);
+					if (!isError) {
+						const deliveryEntity: DeliveryEntity = new DeliveryBuilder()
+							.addName(name)
+							.addItemCount(itemCount)
+							.addTransaction(transaction)
+							.addStatus('APPROVED');
+
+						await this.insert(deliveryEntity);
+					} else {
+					}
 
 					channel.ack(message);
 				}

@@ -3,11 +3,24 @@ import RabbitBootstrap from '../../bootstrap/rabbit.bootstrap';
 import { RepositoryQueue } from '../application/repository-queue';
 
 export class Queue implements RepositoryQueue {
+	async sendError(message: any) {
+		const channel: Channel = RabbitBootstrap.getChannel();
+		const messageAsString = JSON.stringify(message);
+
+		const exchangeName = 'FAILED_ERROR_EXCHANGE';
+		await channel.assertExchange(exchangeName, 'topic', { durable: true });
+		channel.publish(
+			exchangeName,
+			'payment.order_cancelled.error',
+			Buffer.from(messageAsString)
+		);
+	}
+
 	async sendMessage(message: any) {
 		const channel: Channel = RabbitBootstrap.getChannel();
 		const messageAsString = JSON.stringify(message);
 
-		const queueName = 'ORDER_CREATED_EVENT';
+		const queueName = 'BILLED_ORDER_EVENT';
 		await channel.assertQueue(queueName, { durable: true });
 
 		channel.sendToQueue(queueName, Buffer.from(messageAsString));
@@ -17,7 +30,7 @@ export class Queue implements RepositoryQueue {
 		const channel: Channel = RabbitBootstrap.getChannel();
 
 		// Procesamiento de mensajes provenientes de la cola ORDER_DELIVERED_EVENT
-		const queueName = 'ORDER_DELIVERED_EVENT';
+		const queueName = 'ORDER_CREATED_EVENT';
 		await channel.assertQueue(queueName, { durable: true });
 
 		channel.consume(queueName, message => consumer(channel, message, false), {
@@ -28,9 +41,15 @@ export class Queue implements RepositoryQueue {
 		const exchangeName = 'FAILED_ERROR_EXCHANGE';
 		await channel.assertExchange(exchangeName, 'topic', { durable: true });
 
-		const routingKey = '*.order_cancelled.error';
+		const routingKeys = [
+			'store.order_cancelled.error',
+			'delivery.order_cancelled.error',
+		];
 		const assertQueue = await channel.assertQueue('', { exclusive: true });
-		channel.bindQueue(assertQueue.queue, exchangeName, routingKey);
+
+		routingKeys.forEach(key =>
+			channel.bindQueue(assertQueue.queue, exchangeName, key)
+		);
 
 		channel.consume(
 			assertQueue.queue,

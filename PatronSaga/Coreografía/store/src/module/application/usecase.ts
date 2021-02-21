@@ -10,7 +10,7 @@ export class UseCase {
 
 	async insert(storeEntity: StoreEntity) {
 		const result = await this.operation.insert(storeEntity);
-		this.queue.sendError({
+		this.queue.sendMessage({
 			type: 'STORE_FAILED',
 			data: result,
 		});
@@ -26,15 +26,18 @@ export class UseCase {
 
 					const { name, itemCount, transaction } = messageAsJSON.data;
 
+					const status = isError ? 'CANCELLED' : 'APPROVED';
+
 					if (!isError) {
 						const storeEntity: StoreEntity = new StoreBuilder()
 							.addName(name)
 							.addItemCount(itemCount)
 							.addTransaction(transaction)
-							.addStatus('APPROVED');
+							.addStatus(status);
 
 						await this.insert(storeEntity);
 					} else {
+						await this.operation.update(transaction, { status });
 					}
 
 					channel.ack(message);

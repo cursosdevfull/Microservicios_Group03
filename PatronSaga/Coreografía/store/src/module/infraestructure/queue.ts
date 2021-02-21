@@ -33,20 +33,24 @@ export class Queue implements RepositoryQueue {
 		const queueName = 'BILLED_ORDER_EVENT';
 		await channel.assertQueue(queueName, { durable: true });
 
-		channel.consume(queueName, message => consumer(channel, message), {
+		channel.consume(queueName, message => consumer(channel, message, false), {
 			noAck: false,
 		});
 
 		// Procesamiento de mensajes de error provenientes del intercambiador FAILED_ERROR_EXCHANGE
-		/* 		const exchangeName = 'FAILED_ERROR_EXCHANGE';
+		const exchangeName = 'FAILED_ERROR_EXCHANGE';
 		await channel.assertExchange(exchangeName, 'topic', { durable: true });
 
-		const routingKey = '*.order_cancelled.error';
+		const routingKey = 'delivery.order_cancelled.error';
 		const assertQueue = await channel.assertQueue('', { exclusive: true });
 		channel.bindQueue(assertQueue.queue, exchangeName, routingKey);
 
-		channel.consume(assertQueue.queue, message => consumer(channel, message), {
-			noAck: false,
-		}); */
+		channel.consume(
+			assertQueue.queue,
+			message => consumer(channel, message, true),
+			{
+				noAck: false,
+			}
+		);
 	}
 }

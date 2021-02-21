@@ -11,9 +11,10 @@ export class UseCase {
 	async insert(deliveryEntity: DeliveryEntity) {
 		const result = await this.operation.insert(deliveryEntity);
 		this.queue.sendMessage({
-			type: 'PAYMENT_CREATED',
+			type: 'DELIVERY_CREATED',
 			data: result,
 		});
+		// this.operation.update(deliveryEntity.transaction, { status: 'CANCELLED' });
 		return result;
 	}
 
@@ -26,15 +27,18 @@ export class UseCase {
 
 					const { name, itemCount, transaction } = messageAsJSON.data;
 
+					const status = isError ? 'CANCELLED' : 'APPROVED';
+
 					if (!isError) {
 						const deliveryEntity: DeliveryEntity = new DeliveryBuilder()
 							.addName(name)
 							.addItemCount(itemCount)
 							.addTransaction(transaction)
-							.addStatus('APPROVED');
+							.addStatus(status);
 
 						await this.insert(deliveryEntity);
 					} else {
+						await this.operation.update(transaction, { status });
 					}
 
 					channel.ack(message);

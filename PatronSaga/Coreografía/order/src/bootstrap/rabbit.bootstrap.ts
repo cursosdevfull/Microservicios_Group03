@@ -10,7 +10,7 @@ let channel: any;
 
 export default class RabbitBootstrap implements Initialize {
 	async initialize(): Promise<any> {
-		const connection = await amqp.connect(`amqp://${env.RABBIT.HOST}`);
+		const connection = await amqp.connect(`amqp://rabbitmq`);
 		channel = await connection.createChannel();
 
 		console.log('Connection successful to Rabbitmq');

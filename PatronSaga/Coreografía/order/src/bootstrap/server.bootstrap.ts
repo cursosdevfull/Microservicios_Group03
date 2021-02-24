@@ -1,10 +1,11 @@
 import http from 'http';
 import { AddressInfo } from 'net';
 import { Application } from 'express';
-import yenv from 'yenv';
+//import yenv from 'yenv';
 import { Initialize } from './initialize.interface';
 
-const env = yenv();
+// const env = yenv();
+const env = process.env;
 interface Address extends AddressInfo {
 	port: number;
 }

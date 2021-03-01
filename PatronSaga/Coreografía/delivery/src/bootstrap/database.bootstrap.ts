@@ -9,7 +9,7 @@ export class DatabaseBootstrap implements Initialize {
 	async initialize(): Promise<any> {
 		const promiseInitialize = new Promise((resolve, reject) => {
 			/* 			const connectionString = `mongodb+srv://${env.DATABASE.MONGO.USER}:${env.DATABASE.MONGO.PASS}@${env.DATABASE.MONGO.HOST}/${env.DATABASE.MONGO.DB}?retryWrites=true&w=majority`; */
-			const connectionString = `mongodb://${env.MONGO_USERNAME}:${env.MONGO_PASSWORD}@mongo/${env.MONGO_DATABASE}?authSource=${env.MONGO_AUTH}&retryWrites=true&w=majority`;
+			const connectionString = `mongodb://${env.MONGO_USERNAME}:${env.MONGO_PASSWORD}@${env.MONGO_HOST}/${env.MONGO_DATABASE}?authSource=${env.MONGO_AUTH}&retryWrites=true&w=majority`;
 			const options = {
 				useNewUrlParser: true,
 				useCreateIndex: true,

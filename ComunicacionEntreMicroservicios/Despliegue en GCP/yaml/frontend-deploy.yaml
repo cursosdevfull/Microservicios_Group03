@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-pod
+          image: gcr.io/microservicios03/frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: SERVICE_API1_ENDPOINT
+              value: /api
+            - name: PORT
+              value: "3000"
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 20

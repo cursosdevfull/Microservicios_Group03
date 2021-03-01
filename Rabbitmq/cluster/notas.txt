@@ -1,0 +1,8 @@
+docker run -d --rm --net rabbits `
+-v ${PWD}/config/rabbit-1:/config/ `
+-e RABBITMQ_CONFIG_FILE=/config/rabbitmq `
+-e RABBITMQ_ERLANG_COOKIE=IMHWJHCBBRTTLKWNFPZM `
+--hostname rabbit-1 `
+--name rabbit-1 `
+-p 8081:15672 `
+rabbitm1:3.8-management

@@ -1,4 +1,4 @@
-FROM node:10.16.3-alpine as BUILD
+FROM node:14.15.3-alpine as BUILD
 
 ARG basedir="order"
 
@@ -12,12 +12,14 @@ COPY ${basedir}/ ./
 
 RUN npm run server:build
 
-FROM node:10.16.3-alpine
+############################
+FROM node:14.15.3-alpine
 
 WORKDIR /app
 
 COPY --from=BUILD /app/node_modules ./node_modules
 COPY --from=BUILD /app/dist ./dist 
 COPY --from=BUILD /app/package.json ./
+COPY --from=BUILD /app/env.yaml ./
 
 CMD ["npm", "run", "server"]

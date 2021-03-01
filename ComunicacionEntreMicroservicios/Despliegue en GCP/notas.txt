@@ -1,0 +1,43 @@
+1. Ir https://console.cloud.google.com/  
+
+2. Crear una cuenta
+
+3. Crear un proyecto
+
+4. Habilitar el container registry
+
+5. Configuración de confianza entre Docker y GCP
+  - gcloud auth login
+  - gcloud config set project PROJECT_ID
+  - gcloud config set project microservicios03
+  - gcloud auth configure-docker
+
+6. Activar la política de acceso de GCP
+  gcloud projects get-iam-policy microservicios03 \
+  --flatten="bindings[].members" \
+  --format='table(bindings.role)' \
+  --filter="bindings.members:service-PROJECT-NUMBER@containerregistry.iam.gserviceaccount.com"
+
+    gcloud projects get-iam-policy microservicios03 `
+  --flatten="bindings[].members" `
+  --format='table(bindings.role)' `
+  --filter="bindings.members:service-PROJECT-NUMBER@containerregistry.iam.gserviceaccount.com"
+
+7. Taguear las imágenes en docker-compose
+   [hostname]/[project_id]/[nombre de la imagen]
+   gcr.io/microservicios03/frontend
+
+8. Generar las imágenes desde docker-compose
+   docker-compose build
+
+9. Subir las imágenes a GCP
+   docker-compose push
+
+10. Habilitar el API del cluster de Kubernetes Engine
+
+11. Crear el cluster
+
+12. Conectarse al cluster usando el botón "Conectar" de la consola
+    gcloud container clusters get-credentials cluster-microservicios03 --zone us-central1-c --project microservicios03
+
+13. kubectl config current-context

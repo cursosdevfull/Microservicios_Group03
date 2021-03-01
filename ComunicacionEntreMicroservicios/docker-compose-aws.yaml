@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
-    image: gcr.io/microservicios03/frontend
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/frontend
     ports:
       - 90:3000
     environment:
@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: backend1/Dockerfile
-    image: gcr.io/microservicios03/backend1
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/backend1
     ports:
       - 9010:3010
     environment:
@@ -32,7 +32,7 @@ services:
     build:
       context: .
       dockerfile: backend2/Dockerfile
-    image: gcr.io/microservicios03/backend2
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/backend2
     expose:
       - "3020"
     environment:

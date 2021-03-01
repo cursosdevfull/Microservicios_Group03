@@ -14,6 +14,7 @@ const start = async () => {
 		await rabbit.initialize();
 	} catch (error) {
 		console.log(error);
+		process.exit(1);
 	}
 };
 

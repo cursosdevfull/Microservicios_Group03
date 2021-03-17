@@ -1,0 +1,2 @@
+Creación de un secreto
+kubectl create secret generic mysecret --from-file=files/test.txt

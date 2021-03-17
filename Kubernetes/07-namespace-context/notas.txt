@@ -1,0 +1,8 @@
+kubectl get ns
+
+kubectl get po -n default
+
+kubectl get all -n kube-public
+kubectl get all -n kube-system
+
+kubectl create ns test-ns

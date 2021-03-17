@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-nginx-config
+  labels:
+    app: front
+data:
+  test: |
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <h1>Nuevo Home</h1>
+      </body>
+    </html>
+  nginx: |
+    server {
+        listen       8080;
+        server_name  localhost;
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+
+            location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-test
+  labels:
+    app: front
+spec:
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: nginx-vol
+            - mountPath: /usr/share/nginx/html
+              name: html-vol
+      volumes:
+        - name: nginx-vol
+          configMap:
+            name: web-nginx-config
+            items:
+              - key: nginx
+                path: default.conf
+        - name: html-vol
+          configMap:
+            name: web-nginx-config
+            items:
+              - key: test
+                path: index.html

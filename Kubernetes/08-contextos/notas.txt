@@ -1,0 +1,11 @@
+Para el ver el contexto actual
+kubectl config current-context
+
+Para listar todos los contextos
+kubectl config view
+
+Crear un contexto
+kubectl config set-context context-new --namespace=my-ctxt --cluster=docker-desktop --user=docker-desktop
+
+Para cambiar de contexto
+kubectl config use-context context-new

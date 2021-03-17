@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  containers:
+    - name: envar-demo
+      image: nginx:alpine
+      env:
+        - name: VAR_NODO_NOMBRE
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: VAR_POD_NOMBRE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: VAR_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP

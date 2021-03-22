@@ -5,3 +5,6 @@ MONGO_AUTH=admin
 MONGO_PORT=27017
 MONGO_HOST=mongo
 RABBIT_HOST=rabbitmq
+ORDER_HOST=http://order:3010
+AUTH_HOST=http://auth:3050
+KEYWORD_SECRET=Sup3rSecrat0

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-ms-gateway
+  labels:
+    app: ms-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-gateway
+  template:
+    metadata:
+      labels:
+        app: ms-gateway
+    spec:
+      containers:
+        - name: ms-gateway-pod
+          image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_gateway:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: '3000'
+            - name: MONGO_USERNAME
+              value: 'root'
+            - name: MONGO_PASSWORD
+              value: 'ElMund03sanch0'
+            - name: MONGO_DATABASE
+              value: 'ecommerce'
+            - name: MONGO_AUTH
+              value: 'admin'
+            - name: MONGO_PORT
+              value: '27017'
+            - name: MONGO_HOST
+              value: 'mongo-svc'
+            - name: RABBIT_HOST
+              value: 'rabbitmq-0.rabbitmq.rabbits.svc.cluster.local'
+            - name: ORDER_HOST
+              value: 'http://order-svc'
+            - name: AUTH_HOST
+              value: 'http://auth-svc'
+            - name: KEYWORD_SECRET
+              value: 'Sup3rSecrat0'

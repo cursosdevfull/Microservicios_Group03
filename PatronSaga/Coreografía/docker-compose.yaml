@@ -1,14 +1,30 @@
-version: "3"
+version: '3'
 
 services:
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_gateway
+    env_file: envvar.txt
+    ports:
+      - 90:3000
+    environment:
+      - PORT=3000
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - ms_network
   order:
     build:
       context: .
       dockerfile: order/Dockerfile
-    image: ms_order
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_order
     env_file: envvar.txt
-    ports:
-      - 90:3010
+    expose:
+      - '3010'
     environment:
       - PORT=3010
     restart: on-failure
@@ -21,7 +37,7 @@ services:
     build:
       context: .
       dockerfile: payment/Dockerfile
-    image: ms_payment
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_payment
     env_file: envvar.txt
     environment:
       - PORT=3020
@@ -35,7 +51,7 @@ services:
     build:
       context: .
       dockerfile: store/Dockerfile
-    image: ms_store
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_store
     env_file: envvar.txt
     environment:
       - PORT=3030
@@ -49,10 +65,26 @@ services:
     build:
       context: .
       dockerfile: delivery/Dockerfile
-    image: ms_delivery
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_delivery
     env_file: envvar.txt
     environment:
       - PORT=3040
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - ms_network
+  auth:
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+    image: 282865065290.dkr.ecr.us-east-2.amazonaws.com/ms_auth
+    env_file: envvar.txt
+    expose:
+      - '3050'
+    environment:
+      - PORT=3050
     restart: on-failure
     depends_on:
       - rabbitmq
@@ -65,7 +97,7 @@ services:
       - 5672:5672
       - 15672:15672
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:15672']
       interval: 30s
       timeout: 10s
       retries: 5
